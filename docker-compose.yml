@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app-db:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: inventario
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/inventario
+
+volumes:
+  postgres_data:
