@@ -29,7 +29,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public Usuario findByUsuario(String username){
-        return usuarioRepository.findByUsername(username);
+        return usuarioRepository.findByUserName(username);
     }
 
     /**
@@ -42,7 +42,7 @@ public class UsuarioService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Consultado el usuario: "+username);
 
-        Usuario user = usuarioRepository.findByUsername(username);
+        Usuario user = usuarioRepository.findByUserName(username);
         if(user==null){
             throw new UsernameNotFoundException("Usuario no existe");
         }
