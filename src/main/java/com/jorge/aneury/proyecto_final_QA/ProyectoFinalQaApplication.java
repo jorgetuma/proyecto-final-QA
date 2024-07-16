@@ -26,7 +26,7 @@ public class ProyectoFinalQaApplication {
 			Usuario admin = new Usuario();
 			admin.setUserName("admin");
 			admin.setPassword(passwordEncoder.encode("admin"));
-			admin.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_CONSULTA"));
+			admin.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_INVITADO"));
 			usuarioRepository.save(admin);
 		};
 	}
