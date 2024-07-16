@@ -1,9 +1,8 @@
 package com.jorge.aneury.proyecto_final_QA.entidades;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Usuario {
@@ -12,6 +11,8 @@ public class Usuario {
     private int id;
     private String userName;
     private String password;
+    @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
+    List<String> roles;
 
     public Usuario() {
 
@@ -44,5 +45,13 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

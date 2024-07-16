@@ -19,7 +19,7 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @GetMapping("/listar-producto")
+    @GetMapping("/")
     public String listarProductos(Model model) {
         List<Producto> productos = productoService.findAllByStatus(false);
         model.addAttribute("productos", productos);
@@ -30,18 +30,18 @@ public class ProductoController {
     public String crearProducto(@RequestParam String nombre, @RequestParam String descripcion, @RequestParam String categoria, @RequestParam float precio, @RequestParam int cantidad, @RequestParam int cantidadMinima) {
         Producto producto = new Producto(nombre, descripcion, categoria, precio, cantidad, cantidadMinima);
         productoService.insertar(producto);
-        return "redirect:/listar-producto";
+        return "redirect:/";
     }
 
     @PostMapping("/modificar-prod/{id}")
     public String modificarProducto(@PathVariable int id, @RequestParam String nombre, @RequestParam String descripcion, @RequestParam String categoria, @RequestParam float precio, @RequestParam int cantidad, @RequestParam int cantidadMinima) {
         productoService.actualizar(id, nombre, descripcion, categoria, precio, cantidad, cantidadMinima);
-        return "redirect:/listar-producto";
+        return "redirect:/";
     }
 
     @RequestMapping("/eliminar-prod/{id}")
     public String eliminarProducto(@PathVariable int id) {
         productoService.eliminar(id);
-        return "redirect:/listar-producto";
+        return "redirect:/";
     }
 }
