@@ -1,201 +1,167 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
-        body {
-            font-family: 'Manrope', sans-serif;
-            background:#eee;
-        }
-        .size span {
-            font-size: 11px;
-        }
-        .color span {
-            font-size: 11px;
-        }
-    </style>
-</head>
-<body>
-<#include "navbar.ftl">
-<h1>Productos</h1>
+<#include "layout.ftl">
+<main class="container">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3>Productos</h3>
+        <button class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#createProductModal">Crear producto</button>
+    </div>
 
-<div class="input-group flex-nowrap">
-    <span class="input-group-text">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-        </svg>
-    </span>
-    <input type="text" class="form-control" id="searchInput" placeholder="Escribe para buscar..." onkeyup="filterTable()">
-</div>
-
-<div class="container-center">
-    <button class="btn btn-primary m-3" data-toggle="modal" data-target="#createProductModal">Crear producto</button>
-</div>
-
-<table class="table table-striped table-hover">
-    <thead>
-    <tr>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-        <th>Descripción</th>
-        <th>Categoría</th>
-        <th>Cantidad Mínima</th>
-        <th>Acción</th>
-    </tr>
-    </thead>
-    <tbody id="table">
-    <#list productos as p>
-        <tr>
-            <td>${p.nombre}</td>
-            <td>${p.precio}</td>
-            <td>${p.cantidad}</td>
-            <td>${p.descripcion}</td>
-            <td>${p.categoria}</td>
-            <td>${p.cantidadMinima}</td>
-            <td>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modifyProductModal-${p.id}">Modificar</button>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal-${p.id}">Eliminar</button>
-            </td>
-        </tr>
-        <!-- Modal para modificar producto -->
-        <div class="modal fade" id="modifyProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="modifyProductModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modifyProductModalLabel">Modificar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="modifyProductForm" method="post" action="modificar-prod/${p.id}">
-                            <div class="form-group">
-                                <label for="modifyNombre">Nombre</label>
-                                <input type="text" class="form-control" name="nombre" id="modifyNombre" value="${p.nombre}" required>
+    <div class="table-responsive card p-3">
+        <table class="table table-hover" id="productsTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Cantidad Mínima</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table">
+            <#list productos as p>
+                <tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.precio}</td>
+                    <td>${p.cantidad}</td>
+                    <td>${p.descripcion}</td>
+                    <td>${p.categoria}</td>
+                    <td>${p.cantidadMinima}</td>
+                    <td>
+                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#modifyProductModal-${p.id}">
+                            <span class="material-symbols-outlined text-primary">edit</span>
+                        </button>
+                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-${p.id}">
+                            <span class="material-symbols-outlined text-danger">delete</span>
+                        </button>
+                    </td>
+                </tr>
+                <!-- Modal para modificar producto -->
+                <div class="modal fade" id="modifyProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="modifyProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modifyProductModalLabel">Modificar Producto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="form-group">
-                                <label for="modifyPrecio">Precio</label>
-                                <input type="number" class="form-control" name="precio" id="modifyPrecio" value="${p.precio}" required>
+                            <div class="modal-body">
+                                <form id="modifyProductForm" method="post" action="modificar-prod/${p.id}">
+                                    <div class="mb-3">
+                                        <label for="modifyNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="nombre" id="modifyNombre" value="${p.nombre}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modifyPrecio" class="form-label">Precio</label>
+                                        <input type="number" class="form-control" name="precio" id="modifyPrecio" value="${p.precio}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modifyCantidad" class="form-label">Cantidad</label>
+                                        <input type="number" class="form-control" name="cantidad" id="modifyCantidad" value="${p.cantidad}" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modifyDescripcion" class="form-label">Descripción</label>
+                                        <textarea class="form-control" name="descripcion" id="modifyDescripcion">${p.descripcion}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modifyCategoria" class="form-label">Categoría</label>
+                                        <input type="text" class="form-control" name="categoria" id="modifyCategoria" value=${p.categoria} required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modifyCantidadMinima" class="form-label">Cantidad Mínima</label>
+                                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima" value=${p.cantidadMinima} required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary my-3">Modificar</button>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                <label for="modifyCantidad">Cantidad</label>
-                                <input type="number" class="form-control" name="cantidad" id="modifyCantidad" value="${p.cantidad}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="modifyDescripcion">Descripción</label>
-                                <textarea class="form-control" name="descripcion" id="modifyDescripcion">${p.descripcion}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="modifyCategoria">Categoría</label>
-                                <input type="text" class="form-control" name="categoria" id="modifyCategoria" value=${p.categoria} required>
-                            </div>
-                            <div class="form-group">
-                                <label for="modifyCantidadMinima">Cantidad Mínima</label>
-                                <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima" value=${p.cantidadMinima} required>
-                            </div>
-                            <button type="submit" class="btn btn-primary my-3">Modificar</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Modal para confirmar eliminación -->
-        <div class="modal fade" id="confirmDeleteModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este registro?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <a href="eliminar-prod/${p.id}"><button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button></a>
+                <!-- Modal para confirmar eliminación -->
+                <div class="modal fade" id="confirmDeleteModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas eliminar este registro?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <a href="eliminar-prod/${p.id}"><button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </#list>
+            </tbody>
+        </table>
+    </div>
 
-    </#list>
-    </tbody>
-</table>
-<!-- Modal para crear producto -->
-<div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="createProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="createProductModalLabel">Crear Producto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="createProductForm" method="post" action="/crear-prod">
-                    <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" id="nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="precio">Precio</label>
-                        <input type="number" class="form-control" name="precio" id="precio" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidad">Cantidad</label>
-                        <input type="number" class="form-control" name="cantidad" id="cantidad" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Descripción</label>
-                        <textarea class="form-control" name="descripcion" id="descripcion"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoria">Categoría</label>
-                        <input type="text" class="form-control" name="categoria" id="categoria" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cantidadMinima">Cantidad Mínima</label>
-                        <input type="number" class="form-control" name="cantidadMinima" id="cantidadMinima" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary my-3">Crear</button>
-                </form>
+    <!-- Modal para crear producto -->
+    <div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Crear Producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createProductForm" class="needs-validation" method="post" action="/crear-prod">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precio" class="form-label">Precio</label>
+                            <input type="number" class="form-control" name="precio" id="precio" required min="0.01" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidad" class="form-label">Cantidad</label>
+                            <input type="number" class="form-control" name="cantidad" id="cantidad" required min="0.00">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <input type="text" class="form-control" name="categoria" id="categoria" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cantidadMinima" class="form-label">Cantidad Mínima</label>
+                            <input type="number" class="form-control" name="cantidadMinima" id="cantidadMinima" required min="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary my-3">Crear</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+</main>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script>
-    function filterTable() {
-        let input, filter, table, tr, td, i, j, visible;
-        input = document.getElementById("searchInput");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("table");
-        tr = table.getElementsByTagName("tr");
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
-        for (i = 0; i < tr.length; i++) {
-            visible = false;
-            if (tr[i].getElementsByTagName("th").length == 0) {
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        visible = true;
-                    }
-                }
-            } else {
-                visible = true;
-            }
-            if (visible) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
+<script>
+    $(document).ready( function () {
+        $('#productsTable').DataTable({
+            language: {
+                info: "Mostrando _START_-_END_ de _TOTAL_ productos en total",
+                infoEmpty: 'Lista de productos vacía',
+                infoFiltered: '(filtered from _MAX_ total records)',
+                lengthMenu: 'Display _MENU_ records per page',
+                emptyTable: 'La lista está vacía',
+                search: "Buscar:"
+            },
+            ordering:  false,
+            paging: false
+        });
+    });
+
 </script>
-</body>
-</html>
+
