@@ -18,9 +18,7 @@ public class Producto {
     private int CantidadMinima;
     private boolean eliminado;
 
-    public Producto() {
-
-    }
+    public Producto() {}
 
     public Producto(String nombre, String descripcion, String categoria, float precio, int cantidad,int CantidadMinima) {
         this.nombre = nombre;
