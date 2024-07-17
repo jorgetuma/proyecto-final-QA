@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Productos</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
         body {
@@ -33,7 +33,7 @@
 </div>
 
 <div class="container-center">
-    <button class="btn-md btn-primary" data-toggle="modal" data-target="#createProductModal">Crear producto</button>
+    <button class="btn btn-primary m-3" data-toggle="modal" data-target="#createProductModal">Crear producto</button>
 </div>
 
 <table class="table table-striped table-hover">
@@ -58,87 +58,80 @@
             <td>${p.categoria}</td>
             <td>${p.cantidadMinima}</td>
             <td>
-                <button class="btn-sm btn-primary" data-toggle="modal" data-target="#modifyProductModal-${p.id}">Modificar</button>
-                <button class="btn-sm btn-danger" data-toggle="modal" data-target="#confirmDeleteModal-${p.id}">Eliminar</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#modifyProductModal-${p.id}">Modificar</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal-${p.id}">Eliminar</button>
             </td>
         </tr>
+        <!-- Modal para modificar producto -->
+        <div class="modal fade" id="modifyProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="modifyProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifyProductModalLabel">Modificar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="modifyProductForm" method="post" action="modificar-prod/${p.id}">
+                            <div class="form-group">
+                                <label for="modifyNombre">Nombre</label>
+                                <input type="text" class="form-control" name="nombre" id="modifyNombre" value="${p.nombre}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modifyPrecio">Precio</label>
+                                <input type="number" class="form-control" name="precio" id="modifyPrecio" value="${p.precio}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modifyCantidad">Cantidad</label>
+                                <input type="number" class="form-control" name="cantidad" id="modifyCantidad" value="${p.cantidad}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modifyDescripcion">Descripción</label>
+                                <textarea class="form-control" name="descripcion" id="modifyDescripcion">${p.descripcion}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="modifyCategoria">Categoría</label>
+                                <input type="text" class="form-control" name="categoria" id="modifyCategoria" value=${p.categoria} required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modifyCantidadMinima">Cantidad Mínima</label>
+                                <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima" value=${p.cantidadMinima} required>
+                            </div>
+                            <button type="submit" class="btn btn-primary my-3">Modificar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para confirmar eliminación -->
+        <div class="modal fade" id="confirmDeleteModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar este registro?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <a href="eliminar-prod/${p.id}"><button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </#list>
     </tbody>
 </table>
-
-<!-- Modal para modificar producto -->
-<div class="modal fade" id="modifyProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="modifyProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modifyProductModalLabel">Modificar Producto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="modifyProductForm" method="post" action="modificar-prod/${p.id}">
-                    <div class="form-group">
-                        <label for="modifyNombre">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" id="modifyNombre" value="${p.nombre}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="modifyPrecio">Precio</label>
-                        <input type="number" class="form-control" name="precio" id="modifyPrecio" value="${p.precio}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="modifyCantidad">Cantidad</label>
-                        <input type="number" class="form-control" name="cantidad" id="modifyCantidad" value="${p.cantidad}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="modifyDescripcion">Descripción</label>
-                        <textarea class="form-control" name="descripcion" id="modifyDescripcion">${p.descripcion}</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="modifyCategoria">Categoría</label>
-                        <input type="text" class="form-control" name="categoria" id="modifyCategoria" value=${p.categoria} required>
-                    </div>
-                    <div class="form-group">
-                        <label for="modifyCantidadMinima">Cantidad Mínima</label>
-                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima" value=${p.cantidadMinima} required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Modificar</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para confirmar eliminación -->
-    <div class="modal fade" id="confirmDeleteModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    ¿Estás seguro de que deseas eliminar este registro?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                   <a href="eliminar-prod/${p.id}"><button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</#list>
-
 <!-- Modal para crear producto -->
 <div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="createProductModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createProductModalLabel">Crear Producto</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="createProductForm" method="post" action="/crear-prod">
@@ -166,7 +159,7 @@
                         <label for="cantidadMinima">Cantidad Mínima</label>
                         <input type="number" class="form-control" name="cantidadMinima" id="cantidadMinima" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <button type="submit" class="btn btn-primary my-3">Crear</button>
                 </form>
             </div>
         </div>
