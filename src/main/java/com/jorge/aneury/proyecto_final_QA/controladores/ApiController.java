@@ -25,37 +25,44 @@ public class ApiController {
     }
 
     @GetMapping("/productos")
-    public List<Producto> listarProductos() {
-        return productoRepository.findAll();
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<List<Producto>> listarProductos() {
+        List<Producto> productos = productoRepository.findAll();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
-    @PostMapping("/productos/create")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public Producto listarProductos(@RequestBody Producto producto) {
-        return productoRepository.save(producto);
+    @PostMapping("/productos")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Producto> crearProducto(@RequestBody Producto producto) {
+        Producto nuevoProducto = productoRepository.save(producto);
+        return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/productos/update")
+    @PutMapping("/productos")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<Producto> updateProducto(@RequestBody ProductoDto productoDto) {
-        Optional<Producto> producto1 = productoRepository.findById(productoDto.id());
-        if (producto1.isPresent()) {
-            producto1.get().setNombre(productoDto.nombre());
-            producto1.get().setDescripcion(productoDto.descripcion());
-            producto1.get().setCategoria(productoDto.categoria());
-            producto1.get().setPrecio(productoDto.precio());
-            producto1.get().setCantidad(productoDto.cantidad());
-            producto1.get().setCantidadMinima(productoDto.cantidadMinima());
-            return new ResponseEntity<>(productoRepository.save(producto1.get()), HttpStatus.OK);
+    public ResponseEntity<Producto> actualizarProducto(@RequestBody ProductoDto productoDto) {
+        Optional<Producto> optionalProducto = productoRepository.findById(productoDto.id());
+        if (optionalProducto.isPresent()) {
+            Producto productoExistente = optionalProducto.get();
+            productoExistente.setNombre(productoDto.nombre());
+            productoExistente.setDescripcion(productoDto.descripcion());
+            productoExistente.setCategoria(productoDto.categoria());
+            productoExistente.setPrecio(productoDto.precio());
+            productoExistente.setCantidad(productoDto.cantidad());
+            productoExistente.setCantidadMinima(productoDto.cantidadMinima());
+            Producto actualizadoProducto = productoRepository.save(productoExistente);
+            return new ResponseEntity<>(actualizadoProducto, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
     }
 
+    @DeleteMapping("/productos/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @GetMapping("/productos/remove/{id}")
-    public String listarProductos(@PathVariable int id) {
-        productoRepository.deleteById(id);
-        return "Producto eliminado";
+    public ResponseEntity<String> eliminarProducto(@PathVariable int id) {
+        if (productoRepository.existsById(id)) {
+            productoRepository.deleteById(id);
+            return new ResponseEntity<>("Producto eliminado", HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

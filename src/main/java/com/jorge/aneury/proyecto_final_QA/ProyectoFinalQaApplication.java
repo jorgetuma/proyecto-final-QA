@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class ProyectoFinalQaApplication {
@@ -28,6 +29,12 @@ public class ProyectoFinalQaApplication {
 			admin.setPassword(passwordEncoder.encode("admin"));
 			admin.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_INVITADO"));
 			usuarioRepository.save(admin);
+
+			Usuario user = new Usuario();
+			user.setUserName("user");
+			user.setPassword(passwordEncoder.encode("user"));
+			user.setRoles(List.of("ROLE_USER"));
+			usuarioRepository.save(user);
 		};
 	}
 

@@ -35,24 +35,34 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity<AuthResponse> auth(@RequestParam("username") String username, @RequestParam("password") String password){
+    @PostMapping("/")
+    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest){
 
-        Usuario usuario = usuarioRepository.findByUserName(username);
-        if(usuario==null && !usuario.getPassword().equals(passwordEncoder.encode(password))){
+        Usuario usuario = usuarioRepository.findByUserName(authRequest.username());
+        if(usuario==null && !usuario.getPassword().equals(passwordEncoder.encode(authRequest.password()))){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        AuthResponse token = jwtService.generateToken(username);
+        AuthResponse token = jwtService.generateToken(authRequest.username());
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     @PostMapping("/generateToken")
-    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<AuthResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.username());
+            return new ResponseEntity<>(jwtService.generateToken(authRequest.username()), HttpStatus.OK);
         } else {
-            throw new UsernameNotFoundException("Usuario invalido...");
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+//    @PostMapping("/generateToken")
+//    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
+//        if (authentication.isAuthenticated()) {
+//            return jwtService.generateToken(authRequest.username());
+//        } else {
+//            throw new UsernameNotFoundException("Usuario invalido...");
+//        }
+//    }
 }

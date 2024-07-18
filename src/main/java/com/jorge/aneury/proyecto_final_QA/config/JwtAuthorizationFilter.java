@@ -23,7 +23,8 @@ import java.util.List;
 
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
-    private JwtService jwtService;
+
+    private final JwtService jwtService;
 
     @Autowired
     public JwtAuthorizationFilter(JwtService jwtService) {
@@ -42,27 +43,26 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            //Obtengo los roles directamente de los Claims
-            String roles = jwtService.extractClaim(token, "roles");
-
-            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            for (String role : roles.split(",")) {
-                logger.info("Role Filtro : "+role);
-                grantedAuthorities.add(new SimpleGrantedAuthority(role));
-            }
-
-            logger.info("Usuario del JWT: "+jwtService.extractUsername(token));
-            UserDetails userDetails = new User(jwtService.extractUsername(token),"null",true, true, true, true, grantedAuthorities);
-
+            // Validate token and obtain roles
             if (jwtService.validateToken(token)) {
+                String roles = jwtService.extractClaim(token, "roles");
+
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+                for (String role : roles.split(",")) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(role.trim()));
+                }
+
+                UserDetails userDetails = new User(username, "", grantedAuthorities);
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthorities);
-
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                // Token is invalid, clear authentication context
+                SecurityContextHolder.clearContext();
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }

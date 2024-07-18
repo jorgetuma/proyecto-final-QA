@@ -12,10 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -40,7 +37,7 @@ public class UsuarioService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Consultado el usuario: "+username);
+        logger.info("Consultado el usuario: {}", username);
 
         Usuario user = usuarioRepository.findByUserName(username);
         if(user==null){

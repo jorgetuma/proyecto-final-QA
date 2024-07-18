@@ -45,32 +45,50 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="modifyProductForm" method="post" action="modificar-prod/${p.id}">
+                                <form class="needs-validation" id="modifyProductForm-${p.id}" method="post" action="modificar-prod/${p.id}" novalidate>
                                     <div class="mb-3">
-                                        <label for="modifyNombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" name="nombre" id="modifyNombre" value="${p.nombre}" required>
+                                        <label for="modifyNombre${p.id}" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="nombre" id="modifyNombre${p.id}" value="${p.nombre}" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese un nombre.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="modifyPrecio" class="form-label">Precio</label>
-                                        <input type="number" class="form-control" name="precio" id="modifyPrecio" value="${p.precio}" required>
+                                        <label for="modifyPrecio${p.id}" class="form-label">Precio</label>
+                                        <input type="number" class="form-control" name="precio" id="modifyPrecio${p.id}" value="${p.precio}" required min="0.01" step="0.01">
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese un precio válido.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="modifyCantidad" class="form-label">Cantidad</label>
-                                        <input type="number" class="form-control" name="cantidad" id="modifyCantidad" value="${p.cantidad}" required>
+                                        <label for="modifyCantidad${p.id}" class="form-label">Cantidad</label>
+                                        <input type="number" class="form-control" name="cantidad" id="modifyCantidad${p.id}" value="${p.cantidad}" required min="0.00">
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese una cantidad válida.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="modifyDescripcion" class="form-label">Descripción</label>
-                                        <textarea class="form-control" name="descripcion" id="modifyDescripcion">${p.descripcion}</textarea>
+                                        <label for="modifyDescripcion${p.id}" class="form-label">Descripción</label>
+                                        <textarea class="form-control" name="descripcion" id="modifyDescripcion${p.id}" required>${p.descripcion}</textarea>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese una descripción.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="modifyCategoria" class="form-label">Categoría</label>
-                                        <input type="text" class="form-control" name="categoria" id="modifyCategoria" value=${p.categoria} required>
+                                        <label for="modifyCategoria${p.id}" class="form-label">Categoría</label>
+                                        <input type="text" class="form-control" name="categoria" id="modifyCategoria${p.id}" value="${p.categoria}" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese una categoría.
+                                        </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="modifyCantidadMinima" class="form-label">Cantidad Mínima</label>
-                                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima" value=${p.cantidadMinima} required>
+                                        <label for="modifyCantidadMinima${p.id}" class="form-label">Cantidad Mínima</label>
+                                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima${p.id}" value="${p.cantidadMinima}" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese una cantidad mínima válida.
+                                        </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary my-3">Modificar</button>
+                                    <button type="submit" class="btn btn-primary my-3" id="submit${p.id}">Modificar</button>
                                 </form>
                             </div>
                         </div>
@@ -109,30 +127,48 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="createProductForm" class="needs-validation" method="post" action="/crear-prod">
+                    <form id="createProductForm" class="needs-validation" method="post" action="/crear-prod" novalidate>
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" class="form-control" name="nombre" id="nombre" required>
+                            <div class="invalid-feedback">
+                                Por favor, ingrese un nombre.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="precio" class="form-label">Precio</label>
                             <input type="number" class="form-control" name="precio" id="precio" required min="0.01" step="0.01">
+                            <div class="invalid-feedback">
+                                Por favor, ingrese un precio válido.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="cantidad" class="form-label">Cantidad</label>
                             <input type="number" class="form-control" name="cantidad" id="cantidad" required min="0.00">
+                            <div class="invalid-feedback">
+                                Por favor, ingrese una cantidad válida.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descripcion" class="form-label">Descripción</label>
-                            <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+                            <textarea class="form-control" name="descripcion" id="descripcion" rows="3" required></textarea>
+                            <div class="invalid-feedback">
+                                Por favor, ingrese una descripción.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="categoria" class="form-label">Categoría</label>
                             <input type="text" class="form-control" name="categoria" id="categoria" required>
+                            <div class="invalid-feedback">
+                                Por favor, ingrese una categoría.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="cantidadMinima" class="form-label">Cantidad Mínima</label>
                             <input type="number" class="form-control" name="cantidadMinima" id="cantidadMinima" required min="0">
+                            <div class="invalid-feedback">
+                                Por favor, ingrese una cantidad mínima válida.
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary my-3">Crear</button>
                     </form>
@@ -142,8 +178,31 @@
     </div>
 
 </main>
+<script>
+    // JavaScript for Bootstrap 5 validation
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<#--<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-kXNVqIvZh9j50UAnbFrjPT9O2iNpt5fNr1DHCvKuJdRjBLdqV5NHb+8+8AQy50mp" crossorigin="anonymous"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 
