@@ -36,10 +36,10 @@ public class AuthController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest) {
 
         Usuario usuario = usuarioRepository.findByUserName(authRequest.username());
-        if(usuario==null && !usuario.getPassword().equals(passwordEncoder.encode(authRequest.password()))){
+        if (usuario == null || !passwordEncoder.matches(authRequest.password(), usuario.getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         AuthResponse token = jwtService.generateToken(authRequest.username());
