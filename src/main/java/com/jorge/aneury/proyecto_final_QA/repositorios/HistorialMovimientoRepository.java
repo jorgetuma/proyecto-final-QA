@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistorialMovimientoRepository extends JpaRepository<HistorialMovimiento,Integer> {
-    HistorialMovimiento findById(int id);
+    HistorialMovimiento findByIdMovimiento(int id);
 }

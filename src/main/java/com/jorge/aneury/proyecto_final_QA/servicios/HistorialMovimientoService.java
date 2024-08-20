@@ -25,7 +25,7 @@ public class HistorialMovimientoService {
         return historialMovimientoRepository.findAll();
     }
 
-    public HistorialMovimiento buscar(int id) {return historialMovimientoRepository.findById(id);}
+    public HistorialMovimiento buscar(int id) {return historialMovimientoRepository.findByIdMovimiento(id);}
 
     public void registrarIncremento(Producto producto, Usuario usuario) {
         HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Incremento de stock",producto.getCantidad(),new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);

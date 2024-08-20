@@ -37,11 +37,11 @@ public class HistorialMovimiento {
         this.idMovimiento = idMovimiento;
     }
 
-    public Producto getIdProducto() {
+    public Producto getProducto() {
         return producto;
     }
 
-    public void setIdProducto(Producto producto) {
+    public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
