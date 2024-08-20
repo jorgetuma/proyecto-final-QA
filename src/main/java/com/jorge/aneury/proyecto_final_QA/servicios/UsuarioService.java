@@ -1,5 +1,6 @@
 package com.jorge.aneury.proyecto_final_QA.servicios;
 
+import com.jorge.aneury.proyecto_final_QA.dto.UsuarioDto;
 import com.jorge.aneury.proyecto_final_QA.entidades.Usuario;
 import com.jorge.aneury.proyecto_final_QA.repositorios.UsuarioRepository;
 import org.slf4j.Logger;
@@ -53,5 +54,13 @@ public class UsuarioService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
 
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), true, true, true, true, grantedAuthorities);
+    }
+
+    public Usuario save(UsuarioDto usuarioDto) {
+        Usuario usuario = new Usuario();
+        usuario.setUserName(usuarioDto.getUsername());
+        usuario.setPassword(usuarioDto.getPassword());
+        usuario.setRoles(Collections.singletonList(usuarioDto.getRole()));
+        return usuarioRepository.save(usuario);
     }
 }

@@ -2,9 +2,11 @@ package com.jorge.aneury.proyecto_final_QA.controladores;
 
 import com.jorge.aneury.proyecto_final_QA.dto.AuthRequest;
 import com.jorge.aneury.proyecto_final_QA.dto.AuthResponse;
+import com.jorge.aneury.proyecto_final_QA.dto.UsuarioDto;
 import com.jorge.aneury.proyecto_final_QA.entidades.Usuario;
 import com.jorge.aneury.proyecto_final_QA.repositorios.UsuarioRepository;
 import com.jorge.aneury.proyecto_final_QA.servicios.JwtService;
+import com.jorge.aneury.proyecto_final_QA.servicios.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,26 +21,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
     private JwtService jwtService;
-    private AuthenticationManager authenticationManager;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UsuarioRepository usuarioRepository, JwtService jwtService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
+    public AuthController(UsuarioService usuarioService, JwtService jwtService, PasswordEncoder passwordEncoder) {
+        this.usuarioService = usuarioService;
         this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest authRequest) {
 
-        Usuario usuario = usuarioRepository.findByUserName(authRequest.username());
+        Usuario usuario = usuarioService.findByUsuario(authRequest.username());
         if (usuario == null || !passwordEncoder.matches(authRequest.password(), usuario.getPassword())) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -46,23 +46,14 @@ public class AuthController {
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
-    @PostMapping("/generateToken")
-    public ResponseEntity<AuthResponse> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
-        if (authentication.isAuthenticated()) {
-            return new ResponseEntity<>(jwtService.generateToken(authRequest.username()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody UsuarioDto usuarioDto) {
+        Usuario usuario = usuarioService.findByUsuario(usuarioDto.getUsername());
+        if (usuario != null){
+            return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
         }
+        usuarioDto.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
+        usuarioService.save(usuarioDto);
+        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
     }
-
-//    @PostMapping("/generateToken")
-//    public AuthResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
-//        if (authentication.isAuthenticated()) {
-//            return jwtService.generateToken(authRequest.username());
-//        } else {
-//            throw new UsernameNotFoundException("Usuario invalido...");
-//        }
-//    }
 }

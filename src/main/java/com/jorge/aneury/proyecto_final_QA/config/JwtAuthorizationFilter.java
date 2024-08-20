@@ -33,11 +33,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        AntPathRequestMatcher matcher = new AntPathRequestMatcher("/api/**");
-        if (!matcher.matches(request)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        AntPathRequestMatcher matcher = new AntPathRequestMatcher("/api/**");
+//        if (!matcher.matches(request)) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -67,15 +67,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthorities);
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else {
-                // Token is invalid, return 401 Unauthorized
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
             }
-        } else if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            // No token provided, return 401 Unauthorized
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
         }
 
         filterChain.doFilter(request, response);
