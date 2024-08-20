@@ -10,7 +10,7 @@
                     <a class="nav-link" aria-current="page" href="/">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Historial</a>
+                    <a class="nav-link" href="/historial-movimiento">Historial</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/">Dashboard</a>

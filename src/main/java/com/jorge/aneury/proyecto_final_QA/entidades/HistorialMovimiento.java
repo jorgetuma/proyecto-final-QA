@@ -21,8 +21,7 @@ public class HistorialMovimiento {
 
    }
 
-    public HistorialMovimiento(int idMovimiento, Producto producto, String tipo, int cantidad, String fecha, Usuario usuario) {
-        this.idMovimiento = idMovimiento;
+    public HistorialMovimiento(Producto producto, String tipo, int cantidad, String fecha, Usuario usuario) {
         this.producto = producto;
         this.tipo = tipo;
         this.cantidad = cantidad;

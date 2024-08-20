@@ -1,6 +1,9 @@
 package com.jorge.aneury.proyecto_final_QA.controladores;
 
+import com.jorge.aneury.proyecto_final_QA.entidades.HistorialMovimiento;
 import com.jorge.aneury.proyecto_final_QA.entidades.Producto;
+import com.jorge.aneury.proyecto_final_QA.repositorios.ProductoRepository;
+import com.jorge.aneury.proyecto_final_QA.servicios.HistorialMovimientoService;
 import com.jorge.aneury.proyecto_final_QA.servicios.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +16,12 @@ import java.util.List;
 @RequestMapping("/")
 public class ProductoController {
     private final ProductoService productoService;
+    private final HistorialMovimientoService historialMovimientoService;
 
     @Autowired
-    public ProductoController(ProductoService productoService) {
+    public ProductoController(ProductoService productoService,HistorialMovimientoService historialMovimientoService) {
         this.productoService = productoService;
+        this.historialMovimientoService = historialMovimientoService;
     }
 
     @GetMapping("/")
@@ -43,5 +48,12 @@ public class ProductoController {
     public String eliminarProducto(@PathVariable int id) {
         productoService.eliminar(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/historial-movimiento")
+    public String historialMovimiento(Model model) {
+        List<HistorialMovimiento> movimientos = historialMovimientoService.listar();
+        model.addAttribute("movimientos", movimientos);
+        return "historial-movimiento";
     }
 }
