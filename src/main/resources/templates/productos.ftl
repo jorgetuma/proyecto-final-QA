@@ -28,6 +28,12 @@
                     <td>${p.categoria}</td>
                     <td>${p.cantidadMinima}</td>
                     <td>
+                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#stockupProductModal-${p.id}">
+                            <span class="material-symbols-outlined text-primary">add</span>
+                        </button>
+                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#stockdownProductModal-${p.id}">
+                            <span class="material-symbols-outlined text-primary">remove</span>
+                        </button>
                         <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#modifyProductModal-${p.id}">
                             <span class="material-symbols-outlined text-primary">edit</span>
                         </button>
@@ -36,6 +42,55 @@
                         </button>
                     </td>
                 </tr>
+
+                <!-- Modal para incrementar stock producto -->
+                <div class="modal fade" id="stockupProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="stockupProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="stockupProductModalLabel">Agregar stock</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="needs-validation" id="stockProductForm-${p.id}" method="post" action="/incrementar-stock/${p.id}" novalidate>
+                                    <div class="mb-3">
+                                        <label for="cantidad" class="form-label">cantidad</label>
+                                        <input type="number" class="form-control" name="cantidad" id="cantidad" value="1" min="1" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese cantidad.
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary my-3" id="submit">Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para decrementar stock producto -->
+                <div class="modal fade" id="stockdownProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="stockdownProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="stockdownProductModalLabel">Decrementar stock</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="needs-validation" id="stockdownProductForm-${p.id}" method="post" action="/decrementar-stock/${p.id}" novalidate>
+                                    <div class="mb-3">
+                                        <label for="cantidad" class="form-label">cantidad</label>
+                                        <input type="number" class="form-control" name="cantidad" id="cantidad" value="1" min="1" required>
+                                        <div class="invalid-feedback">
+                                            Por favor, ingrese cantidad.
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary my-3" id="submit">Guardar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Modal para modificar producto -->
                 <div class="modal fade" id="modifyProductModal-${p.id}" tabindex="-1" role="dialog" aria-labelledby="modifyProductModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">

@@ -1,5 +1,6 @@
 package com.jorge.aneury.proyecto_final_QA;
 
+import com.jorge.aneury.proyecto_final_QA.entidades.Role;
 import com.jorge.aneury.proyecto_final_QA.entidades.Usuario;
 import org.junit.jupiter.api.Test;
 
@@ -26,11 +27,11 @@ public class UsuarioTest {
         usuario.setId(1);
         usuario.setUserName("Prueba");
         usuario.setPassword("Prueba");
-        usuario.setRoles(roles);
+        usuario.setRole(Role.ROLE_ADMIN);
 
         assertEquals(1, usuario.getId());
         assertEquals("Prueba", usuario.getUserName());
         assertEquals("Prueba", usuario.getPassword());
-        assertEquals("admin", usuario.getRoles().get(0));
+        assertEquals(Role.ROLE_ADMIN, usuario.getRole());
     }
 }

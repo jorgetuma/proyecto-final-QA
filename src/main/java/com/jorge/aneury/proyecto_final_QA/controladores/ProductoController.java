@@ -56,4 +56,16 @@ public class ProductoController {
         model.addAttribute("movimientos", movimientos);
         return "historial-movimiento";
     }
+
+    @PostMapping("/incrementar-stock/{id}")
+    public String incrementarStock(@PathVariable("id") int id, @RequestParam int cantidad) {
+        productoService.incrementarStock(id,cantidad);
+        return "redirect:/";
+    }
+
+    @PostMapping("/decrementar-stock/{id}")
+    public String decrementarStock(@PathVariable("id") int id, @RequestParam int cantidad) {
+        productoService.decrementarStock(id,cantidad);
+        return "redirect:/";
+    }
 }

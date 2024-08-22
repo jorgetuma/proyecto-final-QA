@@ -45,4 +45,16 @@ public class ProductoService {
         Producto p = productoRepository.findProductoById(id);
         p.setEliminado(true);
     }
+
+    @Transactional
+    public void incrementarStock(int id, int cantidad) {
+        Producto p = productoRepository.findProductoById(id);
+        p.setCantidad(p.getCantidad() + cantidad);
+    }
+
+    @Transactional
+    public void decrementarStock(int id, int cantidad) {
+        Producto p = productoRepository.findProductoById(id);
+        p.setCantidad(p.getCantidad() - cantidad);
+    }
 }
