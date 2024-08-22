@@ -11,8 +11,9 @@ public class Usuario {
     private int id;
     private String userName;
     private String password;
-    @ElementCollection(targetClass = String.class,fetch = FetchType.EAGER)
-    List<String> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    private boolean active = true;
 
     public Usuario() {
 
@@ -47,11 +48,19 @@ public class Usuario {
         this.password = password;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

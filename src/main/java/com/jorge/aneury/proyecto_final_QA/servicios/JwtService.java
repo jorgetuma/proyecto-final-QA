@@ -45,7 +45,8 @@ public class JwtService {
 
         //Obtiendo los roles del usuarios
         Usuario byUsuario = usuarioService.findByUsuario(userName);
-        claims.put("roles", String.join(",", byUsuario.getRoles()));
+//        claims.put("roles", String.join(",", byUsuario.getRoles()));
+        claims.put("roles", byUsuario.getRole());
         //
         return createToken(claims, userName);
     }

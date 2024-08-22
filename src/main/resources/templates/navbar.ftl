@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Dashboard</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/usuarios">Usuarios</a>
+                </li>
             </ul>
             <a class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="/logout">Cerrar Sesión</a>
         </div>

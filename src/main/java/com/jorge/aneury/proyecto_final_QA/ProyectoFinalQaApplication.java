@@ -1,5 +1,6 @@
 package com.jorge.aneury.proyecto_final_QA;
 
+import com.jorge.aneury.proyecto_final_QA.entidades.Role;
 import com.jorge.aneury.proyecto_final_QA.entidades.Usuario;
 import com.jorge.aneury.proyecto_final_QA.repositorios.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -27,13 +28,13 @@ public class ProyectoFinalQaApplication {
 				Usuario admin = new Usuario();
 				admin.setUserName("admin");
 				admin.setPassword(passwordEncoder.encode("admin"));
-				admin.setRoles(Arrays.asList("ROLE_ADMIN", "ROLE_USER", "ROLE_INVITADO"));
+				admin.setRole(Role.ROLE_ADMIN);
 				usuarioRepository.save(admin);
 
 				Usuario user = new Usuario();
 				user.setUserName("user");
 				user.setPassword(passwordEncoder.encode("user"));
-				user.setRoles(List.of("ROLE_USER"));
+				user.setRole(Role.ROLE_USER);
 				usuarioRepository.save(user);
 			}
 		};
