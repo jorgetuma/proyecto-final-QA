@@ -20,11 +20,11 @@
             <tbody id="table">
             <#list movimientos as m>
                 <tr>
-                    <td>${m.id}</td>
+                    <td>${m.idMovimiento}</td>
                     <td>${m.producto.id}</td>
                     <td>${m.producto.nombre}</td>
-                    <td>${m.cantidad}</td>
                     <td>${m.tipo}</td>
+                    <td>${m.cantidad}</td>
                     <td>${m.fecha}</td>
                     <td>${m.usuario.userName}</td>
                 </tr>

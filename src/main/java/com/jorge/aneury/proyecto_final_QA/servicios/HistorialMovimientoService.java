@@ -27,13 +27,13 @@ public class HistorialMovimientoService {
 
     public HistorialMovimiento buscar(int id) {return historialMovimientoRepository.findByIdMovimiento(id);}
 
-    public void registrarIncremento(Producto producto, Usuario usuario) {
-        HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Incremento de stock",producto.getCantidad(),new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);
+    public void registrarIncremento(Producto producto, Usuario usuario,int cantidad) {
+        HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Incremento de stock",cantidad,new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);
         historialMovimientoRepository.save(historialMovimiento);
     }
 
-    public void registrarDecremento(Producto producto,Usuario usuario) {
-        HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Decremento de stock",producto.getCantidad(),new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);
+    public void registrarDecremento(Producto producto,Usuario usuario,int cantidad) {
+        HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Decremento de stock",cantidad,new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);
         historialMovimientoRepository.save(historialMovimiento);
     }
 }
