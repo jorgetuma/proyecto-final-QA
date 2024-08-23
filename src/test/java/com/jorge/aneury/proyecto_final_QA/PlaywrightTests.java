@@ -128,6 +128,7 @@ public class PlaywrightTests {
 
         // Open the create product modal
         page.click("button[data-bs-target='#createProductModal']");
+        assertThat(page.locator("#createProductModal")).isVisible();
 
         // Fill out the form in the modal
         page.fill("input#nombre", "Test Product");
@@ -153,6 +154,7 @@ public class PlaywrightTests {
 
         // Open the create product modal
         page.click("button[data-bs-target='#createProductModal']");
+        assertThat(page.locator("#createProductModal")).isVisible();
 
         // Submit the form
         page.click("form#createProductForm button[type=submit]");
@@ -175,6 +177,7 @@ public class PlaywrightTests {
 
         // Open the create product modal
         page.click("button[data-bs-target='#createProductModal']");
+        assertThat(page.locator("#createProductModal")).isVisible();
 
         // Fill out the form in the modal with a negative price
         page.fill("input#nombre", "Test Product Negative Price");
@@ -223,16 +226,21 @@ public class PlaywrightTests {
         page.fill("input[name=password]", "admin");
         page.click("button[type=submit]");
 
+        assertEquals("http://localhost:8080/", page.url());
+
+        // Assert that update and delete icons are visible
+        assertThat(page.locator("button[data-bs-target^='#modifyProductModal-']").first()).isVisible();
+
         // Open the create product modal
-        page.click("button[data-bs-target='#modifyProductModal-1']");
+        page.locator("button[data-bs-target^='#modifyProductModal-']").first().click();
 
-        assertThat(page.locator("#modifyProductModal-1")).isVisible();
+        assertThat(page.locator("[id^='modifyProductModal-']").first()).isVisible();
 
-        // Fill out the form in the modal with a negative price
-        page.fill("input#modifyNombre1", "Product Updated");
+        // Fill out the form in the modal with updated product name
+        page.locator("[id^='modifyProductModal-'] input[id^='modifyNombre']").first().fill("Product Updated");
 
-        // Try to submit the form
-        page.click("#submit1");
+        // Submit the form
+        page.locator("[id^='modifyProductModal-'] button[type='submit']").first().click();
 
         assertThat(page.locator("table#productsTable")).containsText("Product Updated");
     }
@@ -246,7 +254,7 @@ public class PlaywrightTests {
         page.click("button[type=submit]");
 
         // Open the confirm delete modal
-        page.click("button[data-bs-toggle='modal'][data-bs-target='#confirmDeleteModal-1']");
+        page.click("button[data-bs-toggle='modal'][data-bs-target^='#confirmDeleteModal-']");
 
         // Click the delete button in the modal
         page.click("button#confirmDeleteButton");

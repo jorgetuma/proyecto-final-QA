@@ -54,8 +54,8 @@
                             <div class="modal-body">
                                 <form class="needs-validation" id="stockProductForm-${p.id}" method="post" action="/incrementar-stock/${p.id}" novalidate>
                                     <div class="mb-3">
-                                        <label for="cantidad" class="form-label">cantidad</label>
-                                        <input type="number" class="form-control" name="cantidad" id="cantidad" value="1" min="1" required>
+                                        <label for="cantidadIncrementar${p.id}" class="form-label">cantidad</label>
+                                        <input type="number" class="form-control" name="cantidadIncrementar" id="cantidadIncrementar${p.id}" value="1" min="1" required>
                                         <div class="invalid-feedback">
                                             Por favor, ingrese cantidad.
                                         </div>
@@ -78,8 +78,8 @@
                             <div class="modal-body">
                                 <form class="needs-validation" id="stockdownProductForm-${p.id}" method="post" action="/decrementar-stock/${p.id}" novalidate>
                                     <div class="mb-3">
-                                        <label for="cantidad" class="form-label">cantidad</label>
-                                        <input type="number" class="form-control" name="cantidad" id="cantidad" value="1" min="1" required>
+                                        <label for="cantidadDecrementar${p.id}" class="form-label">cantidad</label>
+                                        <input type="number" class="form-control" name="cantidadDecrementar" id="cantidadDecrementar${p.id}" value="1" min="1" required>
                                         <div class="invalid-feedback">
                                             Por favor, ingrese cantidad.
                                         </div>

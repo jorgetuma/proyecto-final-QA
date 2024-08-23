@@ -58,14 +58,14 @@ public class ProductoController {
     }
 
     @PostMapping("/incrementar-stock/{id}")
-    public String incrementarStock(@PathVariable("id") int id, @RequestParam int cantidad) {
-        productoService.incrementarStock(id,cantidad);
+    public String incrementarStock(@PathVariable("id") int id, @RequestParam int cantidadIncrementar) {
+        productoService.incrementarStock(id,cantidadIncrementar);
         return "redirect:/";
     }
 
     @PostMapping("/decrementar-stock/{id}")
-    public String decrementarStock(@PathVariable("id") int id, @RequestParam int cantidad) {
-        productoService.decrementarStock(id,cantidad);
+    public String decrementarStock(@PathVariable("id") int id, @RequestParam int cantidadDecrementar) {
+        productoService.decrementarStock(id,cantidadDecrementar);
         return "redirect:/";
     }
 }

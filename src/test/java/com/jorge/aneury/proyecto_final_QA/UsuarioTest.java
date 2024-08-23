@@ -21,8 +21,6 @@ public class UsuarioTest {
     @Test
     public void creandoUsuario2Test() {
         Usuario usuario = new Usuario();
-        List<String> roles = new ArrayList<>();
-        roles.add("admin");
 
         usuario.setId(1);
         usuario.setUserName("Prueba");
