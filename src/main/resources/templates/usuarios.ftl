@@ -29,7 +29,7 @@
                         <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#modifyUserModal-${u.id}">
                             <span class="material-symbols-outlined text-primary">edit</span>
                         </button>
-                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal-${u.id}">
+                        <button class="btn px-1 py-0" data-bs-toggle="modal" data-bs-target="#confirmDeleteUserModal-${u.id}">
                             <span class="material-symbols-outlined text-danger">delete</span>
                         </button>
                     </td>
@@ -70,7 +70,7 @@
                 </div>
 
                 <!-- Modal para confirmar eliminación -->
-                <div class="modal fade" id="confirmDeleteModal-${u.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                <div class="modal fade" id="confirmDeleteUserModal-${u.id}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -82,7 +82,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <a href="/usuarios/eliminar/${u.id}"><button type="button" class="btn btn-danger" id="confirmDeleteButton">Eliminar</button></a>
+                                <a href="/usuarios/eliminar/${u.id}"><button type="button" class="btn btn-danger" id="confirmDeleteUserButton">Eliminar</button></a>
                             </div>
                         </div>
                     </div>
