@@ -84,4 +84,24 @@ public class ProductoController {
         historialMovimientoService.registrarDecremento(p,usuario,cantidadDecrementar);
         return "redirect:/";
     }
+
+    @GetMapping("/dashboard")
+    public String dashboard(Model model) {
+        List<HistorialMovimiento> incrementos = historialMovimientoService.listarByTipo("Incremento de stock");
+        List<HistorialMovimiento> decrementos = historialMovimientoService.listarByTipo("Decremento de stock");
+        model.addAttribute("incrementos", incrementos.size());
+        model.addAttribute("decrementos", decrementos.size());
+        model.addAttribute("cantProductos",productoService.findAllByStatus(false).size());
+        model.addAttribute("totalStock",obtenerTotalStock());
+        return "dashboard";
+    }
+
+    /*Calcular el total de todas las unidades de productos en el inventario*/
+    private int obtenerTotalStock() {
+        int totalStock = 0;
+        for (Producto p : productoService.findAllByStatus(false)) {
+            totalStock += p.getCantidad();
+        }
+        return totalStock;
+    }
 }

@@ -36,4 +36,8 @@ public class HistorialMovimientoService {
         HistorialMovimiento historialMovimiento = new HistorialMovimiento(producto,"Decremento de stock",cantidad,new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date()),usuario);
         historialMovimientoRepository.save(historialMovimiento);
     }
+
+    public List<HistorialMovimiento> listarByTipo(String tipo) {
+        return historialMovimientoRepository.findAllByTipo(tipo);
+    }
 }

@@ -13,7 +13,7 @@
                     <a class="nav-link" href="/historial-movimiento">Historial</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Dashboard</a>
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/usuarios">Usuarios</a>
