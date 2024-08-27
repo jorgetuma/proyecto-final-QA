@@ -14,14 +14,7 @@ services:
       - postgres_data:/inventario
 
     # app (cliente)
-  app:
-      image: jorgetuma
-      container_name: app
-      restart: always
-      ports:
-        - "8080:8080"
-      depends_on:
-        - app-db
+
 
 volumes:
   postgres_data:

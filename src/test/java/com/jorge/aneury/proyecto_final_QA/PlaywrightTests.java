@@ -3,8 +3,6 @@ package com.jorge.aneury.proyecto_final_QA;
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.*;
 
-import java.nio.file.Paths;
-import java.util.function.BooleanSupplier;
 import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -339,6 +337,33 @@ public class PlaywrightTests {
 
         // Verify that the user has been removed
         assertThat(page.locator("table#usersTable")).not().containsText(lastUsername);
+    }
+
+    @Test
+    void testHistorialView() {
+        loginAsAdmin();
+
+        page.click("a[href='/historial-movimiento']");
+        assertEquals("http://localhost:8080/historial-movimiento", page.url());
+
+        Locator lastRow = page.locator("table#productsTable tr").last();
+        String lastText = lastRow.locator("td").first().textContent();
+
+        assertThat(page.getByText("Historial de Movimientos")).isVisible();
+        assertThat(page.locator("table#productsTable")).containsText(lastText);
+
+    }
+
+    @Test
+    void testViewDashboard() {
+        loginAsAdmin();
+
+        page.click("a[href='/dashboard']");
+        assertEquals("http://localhost:8080/dashboard", page.url());
+
+        assertThat(page.getByText("Dashboard de estado de inventario")).isVisible();
+        assertThat(page.locator("[id^='stockChart']").last()).isVisible();
+
     }
 
     private void loginAsAdmin() {

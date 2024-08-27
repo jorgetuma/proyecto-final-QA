@@ -1,7 +1,7 @@
 <#include "layout.ftl">
 <main>
     <div class="container mt-6">
-        <h2>Dashboard</h2>
+        <h2>Dashboard de estado de inventario</h2>
         <canvas id="stockChart"></canvas>
     </div>
 </main>
