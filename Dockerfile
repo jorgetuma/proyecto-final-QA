@@ -5,7 +5,7 @@ WORKDIR /home/gradle/src
 RUN gradle bootjar --no-daemon
 
 # Etapa 2: Preparar el contenedor para la aplicación
-FROM eclipse-temurin:17.0.8.1_1-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 # Crear directorio de la aplicación
 RUN mkdir /app
