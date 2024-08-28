@@ -46,7 +46,7 @@
 # Planificación  de Proyecto
 
 ## Plan de Proyecto
-
+Para dar seguimiento a las tareas y metas del proyecto utilizamos Jira con la metodología SCRUM.
 1. **Alcance**
     - Desarrollar un sistema de gestión de inventarios para reforzar conocimientos en QA.
     - Incluir funcionalidades de gestión de productos, control de stock y más.
@@ -79,3 +79,210 @@
     - **Fallos en la Integración:** Realizar pruebas de integración continuas y documentar interfaces claramente.
     - **Problemas de Seguridad:** Implementar pruebas de seguridad regulares y actualizaciones de seguridad.
     - **Dificultades en la Usabilidad:** Realizar pruebas de usabilidad con usuarios finales.
+
+# Documentación Técnica
+
+La aplicación sigue una arquitectura basada en MVC Web.
+
+![img.png](img.png)
+
+Tecnologías Implementada 
+1. Backend
+Spring Boot: Framework para el desarrollo rápido de aplicaciones Java basadas en microservicios.
+Spring Security con OAuth y JWT: Proporciona autenticación y autorización seguras.
+Spring Data JPA: Abstracción para el acceso a datos con soporte para bases de datos relacionales.
+PostgreSQL: Base de datos relacional utilizada para almacenar información de productos, movimientos de stock y usuarios.
+
+2.  Frontend
+Freemarker: Motor de Plantillas para renderizar vistas HTML.
+Chart.js: Librería JavaScript para la visualización de datos en gráficos (usada en la vista del Dashboard de estado de inventario).
+
+3. Infraestructura y CI/CD
+Docker: Contenerización de la aplicación para un despliegue consistente.
+Docker Compose: Orquestación de contenedores, facilitando la gestión y configuración de múltiples servicios.
+GitHub Actions: CI/CD para automatización de pruebas y despliegues.
+
+4. Pruebas
+JUnit: Librería para realizar pruebas unitarias.
+Playwright: Librería para realizar pruebas para navegadores.
+Cuccumber: Librería para pruebas de aceptación.
+
+5. Migraciones de BD
+Flyway: Librería para realizar migraciones de base de datos.
+
+## Guía de instalación y mantenimiento
+Docker: Tener Docker instalado en el sistema.
+Docker Compose: Incluido con Docker Desktop o instalable por separado.
+
+Para arracncar todo el escenario ejecutaar en terminal el comando docker-compose up -d en el directorio del proyecto.
+Al realizar cambios que requieran recompilar la aplicación docker-compose up -d --build
+
+## Guía de Pruebas
+
+###  Pruebas de Autenticación
+
+####  Prueba de Inicio de Sesión Exitoso
+- **ID del Caso de Prueba:** AU-001
+- **Método de Prueba:** `testLogin`
+- **Objetivo:** Verificar que un usuario puede iniciar sesión con credenciales válidas.
+- **Precondiciones:** El usuario "admin" debe estar registrado.
+- **Datos de Entrada:**
+   - Usuario: "admin"
+   - Contraseña: "admin"
+- **Pasos:**
+   1. Navegar a la página de inicio de sesión.
+   2. Ingresar las credenciales válidas.
+   3. Hacer clic en "Iniciar Sesión".
+- **Resultado Esperado:** El usuario inicia sesión correctamente y se redirige a la página principal.
+- **Resultado Real:** El usuario inició sesión exitosamente.
+- **Estado:** ✅ Aprobado
+
+####  Prueba de Inicio de Sesión Fallido
+- **ID del Caso de Prueba:** AU-002
+- **Método de Prueba:** `testFailLogin`
+- **Objetivo:** Verificar que un usuario no puede iniciar sesión con credenciales inválidas.
+- **Precondiciones:** El usuario "admin" debe estar registrado.
+- **Datos de Entrada:**
+   - Usuario: "admin"
+   - Contraseña: "password" (incorrecta)
+- **Pasos:**
+   1. Navegar a la página de inicio de sesión.
+   2. Ingresar credenciales inválidas.
+   3. Hacer clic en "Iniciar Sesión".
+- **Resultado Esperado:** Se muestra un mensaje de error indicando "Bad credentials".
+- **Resultado Real:** Se mostró el mensaje de error "Bad credentials".
+- **Estado:** ✅ Aprobado
+
+####  Prueba de Cierre de Sesión
+- **ID del Caso de Prueba:** AU-003
+- **Método de Prueba:** `testLoginAndLogout`
+- **Objetivo:** Verificar que un usuario puede cerrar sesión correctamente.
+- **Precondiciones:** El usuario debe estar autenticado.
+- **Datos de Entrada:** N/A
+- **Pasos:**
+   1. Iniciar sesión como "admin".
+   2. Hacer clic en el enlace de "Logout".
+- **Resultado Esperado:** El usuario es redirigido a la página de inicio de sesión.
+- **Resultado Real:** El usuario fue redirigido correctamente a la página de inicio de sesión.
+- **Estado:** ✅ Aprobado
+
+###  Pruebas de Gestión de Productos
+
+####  Crear un Producto Exitosamente
+- **ID del Caso de Prueba:** CP-001
+- **Método de Prueba:** `testCreateProduct`
+- **Objetivo:** Verificar que un producto puede ser creado correctamente.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:**
+   - Nombre: "Test Product"
+   - Precio: 10.99
+   - Cantidad: 100
+   - Descripción: "This is a test product."
+   - Categoría: "Test Category"
+   - Cantidad Mínima: 1
+- **Pasos:**
+   1. Abrir el modal para crear un producto.
+   2. Completar los campos del formulario.
+   3. Hacer clic en "Guardar".
+- **Resultado Esperado:** El producto se crea y aparece en la lista de productos.
+- **Resultado Real:** El producto se creó y se mostró en la lista de productos.
+- **Estado:** ✅ Aprobado
+
+####  Intentar Crear un Producto con Campos Vacíos
+- **ID del Caso de Prueba:** CP-002
+- **Método de Prueba:** `testCreateEmptyProduct`
+- **Objetivo:** Verificar que no se puede crear un producto sin completar los campos obligatorios.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:** Campos vacíos.
+- **Pasos:**
+   1. Abrir el modal para crear un producto.
+   2. Hacer clic en "Guardar" sin llenar los campos.
+- **Resultado Esperado:** Se muestran mensajes de error indicando que los campos son obligatorios.
+- **Resultado Real:** Los mensajes de error se mostraron correctamente.
+- **Estado:** ✅ Aprobado
+
+####  Crear un Producto con Precio Negativo
+- **ID del Caso de Prueba:** CP-003
+- **Método de Prueba:** `testCreateProductWithNegativePrice`
+- **Objetivo:** Verificar que no se puede crear un producto con un precio negativo.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:**
+   - Nombre: "Test Product Negative Price"
+   - Precio: -10.99 (negativo)
+   - Cantidad: 100
+   - Descripción: "This is a test product with a negative price."
+   - Categoría: "Test Category"
+   - Cantidad Mínima: 1
+- **Pasos:**
+   1. Abrir el modal para crear un producto.
+   2. Ingresar un precio negativo y completar los demás campos.
+   3. Hacer clic en "Guardar".
+- **Resultado Esperado:** Se muestra un mensaje de error indicando que el precio no puede ser negativo.
+- **Resultado Real:** El mensaje de error se mostró correctamente.
+- **Estado:** ✅ Aprobado
+
+####  Crear un Producto con Cantidad Negativa
+- **ID del Caso de Prueba:** CP-004
+- **Método de Prueba:** `testCreateProductWithNegativeQuantity`
+- **Objetivo:** Verificar que no se puede crear un producto con una cantidad negativa.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:**
+   - Nombre: "Test Product Negative Quantity"
+   - Precio: 10.99
+   - Cantidad: -100 (negativa)
+   - Descripción: "This is a test product with a negative quantity."
+   - Categoría: "Test Category"
+   - Cantidad Mínima: 1
+- **Pasos:**
+   1. Abrir el modal para crear un producto.
+   2. Ingresar una cantidad negativa y completar los demás campos.
+   3. Hacer clic en "Guardar".
+- **Resultado Esperado:** Se muestra un mensaje de error indicando que la cantidad no puede ser negativa.
+- **Resultado Real:** El mensaje de error se mostró correctamente.
+- **Estado:** ✅ Aprobado
+
+####  Actualizar un Producto
+- **ID del Caso de Prueba:** CP-005
+- **Método de Prueba:** `testUpdateProduct`
+- **Objetivo:** Verificar que un producto existente puede ser actualizado correctamente.
+- **Precondiciones:** El producto debe existir en el inventario.
+- **Datos de Entrada:**
+   - Nombre Nuevo: "Product Updated"
+- **Pasos:**
+   1. Abrir el modal para modificar el producto.
+   2. Actualizar el nombre del producto.
+   3. Hacer clic en "Guardar".
+- **Resultado Esperado:** El producto se actualiza en la base de datos y se muestra el nuevo nombre en la lista de productos.
+- **Resultado Real:** El producto se actualizó correctamente.
+- **Estado:** ✅ Aprobado
+
+####  Eliminar un Producto
+- **ID del Caso de Prueba:** CP-006
+- **Método de Prueba:** `testDeleteProduct`
+- **Objetivo:** Verificar que un producto puede ser eliminado correctamente del inventario.
+- **Precondiciones:** El producto debe existir en el inventario.
+- **Datos de Entrada:** N/A
+- **Pasos:**
+   1. Abrir el modal de confirmación para eliminar un producto.
+   2. Confirmar la eliminación.
+- **Resultado Esperado:** El producto se elimina y ya no aparece en la lista de productos.
+- **Resultado Real:** El producto se eliminó correctamente.
+- **Estado:** ✅ Aprobado
+
+###  Pruebas de Gestión de Usuarios
+
+####  Crear un Usuario Exitosamente
+- **ID del Caso de Prueba:** CU-001
+- **Método de Prueba:** `testCreateUsuario`
+- **Objetivo:** Verificar que un nuevo usuario puede ser creado correctamente.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:**
+   - Usuario: "newuser"
+   - Contraseña: "password123"
+   - Rol: "ROLE_USER"
+- **Pasos:**
+   1. Abrir el modal para crear un usuario.
+   2. Completar los campos del formulario.
+   3. Hacer clic en "Guardar".
+- **Resultado Esperado:** El usuario se
+
