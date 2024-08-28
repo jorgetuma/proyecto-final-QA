@@ -284,5 +284,105 @@ Al realizar cambios que requieran recompilar la aplicación docker-compose up -d
    1. Abrir el modal para crear un usuario.
    2. Completar los campos del formulario.
    3. Hacer clic en "Guardar".
-- **Resultado Esperado:** El usuario se
+- **Resultado Esperado:** El usuario se crea y aparece en la lista de usuarios.
+- **Resultado Real:** El usuario se creó correctamente.
+- **Estado:** ✅ Aprobado
 
+#### 2.3.2. Intentar Crear un Usuario con Campos Vacíos
+- **ID del Caso de Prueba:** CU-002
+- **Método de Prueba:** `testCreateEmptyUsuario`
+- **Objetivo:** Verificar que no se puede crear un usuario sin completar los campos obligatorios.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:** Campos vacíos.
+- **Pasos:**
+    1. Abrir el modal para crear un usuario.
+    2. Hacer clic en "Guardar" sin llenar los campos.
+- **Resultado Esperado:** Se muestran mensajes de error indicando que los campos son obligatorios.
+- **Resultado Real:** Los mensajes de error se mostraron correctamente.
+- **Estado:** ✅ Aprobado
+
+#### 2.3.3. Actualizar un Usuario
+- **ID del Caso de Prueba:** CU-003
+- **Método de Prueba:** `testUpdateUsuario`
+- **Objetivo:** Verificar que un usuario existente puede ser actualizado correctamente.
+- **Precondiciones:** El usuario debe existir en el sistema.
+- **Datos de Entrada:**
+    - Usuario Nuevo: "updateduser"
+- **Pasos:**
+    1. Abrir el modal para modificar el usuario.
+    2. Actualizar el nombre de usuario.
+    3. Hacer clic en "Guardar".
+- **Resultado Esperado:** El usuario se actualiza en la base de datos y se muestra el nuevo nombre en la lista de usuarios.
+- **Resultado Real:** El usuario se actualizó correctamente.
+- **Estado:** ✅ Aprobado
+
+#### 2.3.4. Eliminar un Usuario
+- **ID del Caso de Prueba:** CU-004
+- **Método de Prueba:** `testDeleteUsuario`
+- **Objetivo:** Verificar que un usuario puede ser eliminado correctamente del sistema.
+- **Precondiciones:** El usuario debe existir en el sistema.
+- **Datos de Entrada:** N/A
+- **Pasos:**
+    1. Abrir el modal de confirmación para eliminar un usuario.
+    2. Confirmar la eliminación.
+- **Resultado Esperado:** El usuario se elimina y ya no aparece en la lista de usuarios.
+- **Resultado Real:** El usuario se eliminó correctamente.
+- **Estado:** ✅ Aprobado
+
+### 2.4. Pruebas de Gestión de Stock
+
+#### 2.4.1. Incrementar Stock de un Producto
+- **ID del Caso de Prueba:** CS-001
+- **Método de Prueba:** `testIncrementProductStock`
+- **Objetivo:** Verificar que se puede incrementar el stock de un producto.
+- **Precondiciones:** El producto debe existir en el inventario.
+- **Datos de Entrada:**
+    - Cantidad a Incrementar: 5
+- **Pasos:**
+    1. Abrir el modal para incrementar stock.
+    2. Ingresar la cantidad a incrementar.
+    3. Hacer clic en "Incrementar".
+- **Resultado Esperado:** El stock del producto se incrementa en 5 unidades.
+- **Resultado Real:** El stock se incrementó correctamente.
+- **Estado:** ✅ Aprobado
+
+#### 2.4.2. Decrementar Stock de un Producto
+- **ID del Caso de Prueba:** CS-002
+- **Método de Prueba:** `testDecrementProductStock`
+- **Objetivo:** Verificar que se puede decrementar el stock de un producto.
+- **Precondiciones:** El producto debe tener suficiente stock disponible.
+- **Datos de Entrada:**
+    - Cantidad a Decrementar: 3
+- **Pasos:**
+    1. Abrir el modal para decrementar stock.
+    2. Ingresar la cantidad a decrementar.
+    3. Hacer clic en "Decrementar".
+- **Resultado Esperado:** El stock del producto se decrementa en 3 unidades.
+- **Resultado Real:** El stock se decrementó correctamente.
+- **Estado:** ✅ Aprobado
+
+### 2.5. Pruebas de Visualización
+
+#### 2.5.1. Visualizar el Historial de Movimientos
+- **ID del Caso de Prueba:** VH-001
+- **Método de Prueba:** `testHistorialView`
+- **Objetivo:** Verificar que se puede visualizar correctamente el historial de movimientos.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:** N/A
+- **Pasos:**
+    1. Navegar a la página del historial de movimientos.
+- **Resultado Esperado:** El historial de movimientos se muestra correctamente.
+- **Resultado Real:** El historial se mostró correctamente.
+- **Estado:** ✅ Aprobado
+
+#### 2.5.2. Visualizar el Dashboard
+- **ID del Caso de Prueba:** VH-002
+- **Método de Prueba:** `testViewDashboard`
+- **Objetivo:** Verificar que se puede visualizar correctamente el dashboard.
+- **Precondiciones:** El usuario debe estar autenticado como administrador.
+- **Datos de Entrada:** N/A
+- **Pasos:**
+    1. Navegar a la página del dashboard.
+- **Resultado Esperado:** El dashboard se muestra correctamente con gráficos y estadísticas.
+- **Resultado Real:** El dashboard se mostró correctamente.
+- **Estado:** ✅ Aprobado
