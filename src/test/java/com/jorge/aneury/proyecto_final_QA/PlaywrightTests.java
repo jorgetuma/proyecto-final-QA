@@ -366,12 +366,94 @@ public class PlaywrightTests {
 
     }
 
+    @Test
+    void testIncrementProductStock() {
+        // Login as admin
+        loginAsAdmin();
+
+        // Create a new product
+        createTestProduct("Test Product for Stock Increment", "10.99", "100", "Test product for stock increment", "Test Category", "10");
+
+        // Find the first product in the table
+        Locator firstProductRow = page.locator("table#productsTable tbody tr").first();
+        String productName = firstProductRow.locator("td").first().textContent();
+        int initialStock = Integer.parseInt(firstProductRow.locator("td").nth(2).textContent());
+
+        // Click the increment stock button
+        firstProductRow.locator("button[data-bs-target^='#stockupProductModal-']").click();
+
+        assertThat(page.locator("[id^='stockupProductModal-']").first()).isVisible();
+
+        // Fill in the increment amount
+        page.fill("input[name='cantidadIncrementar']", "5");
+
+        // Submit the form
+        page.locator("[id^='stockupProductModal-'] button[type='submit']").first().click();
+
+        // Wait for the page to reload
+        page.waitForURL("http://localhost:8080/");
+
+        // Find the product again and check if the stock has increased
+        Locator updatedProductRow = page.locator("table#productsTable tbody tr", new Page.LocatorOptions().setHasText(productName)).first();
+        int updatedStock = Integer.parseInt(updatedProductRow.locator("td").nth(2).textContent());
+
+        assertEquals(initialStock + 5, updatedStock, "Stock should have increased by 5");
+    }
+
+    @Test
+    void testDecrementProductStock() {
+        // Login as admin
+        loginAsAdmin();
+        
+        // Find the first product in the table
+        Locator firstProductRow = page.locator("table#productsTable tbody tr").first();
+        String productName = firstProductRow.locator("td").first().textContent();
+        int initialStock = Integer.parseInt(firstProductRow.locator("td").nth(2).textContent());
+
+        // Click the decrement stock button
+        firstProductRow.locator("button[data-bs-target^='#stockdownProductModal-']").click();
+
+        assertThat(page.locator("[id^='stockdownProductModal-']").first()).isVisible();
+
+        // Fill in the decrement amount (ensure it's less than or equal to the initial stock)
+        int decrementAmount = Math.min(initialStock, 3);
+        page.fill("input[name='cantidadDecrementar']", String.valueOf(decrementAmount));
+
+        // Submit the form
+        page.locator("[id^='stockdownProductModal-'] button[type='submit']").first().click();
+
+        // Wait for the page to reload
+        page.waitForURL("http://localhost:8080/");
+
+        // Find the product again and check if the stock has decreased
+        assertThat(page.locator("table#productsTable tbody tr").first()).isVisible();
+
+        // Find the product with the same name
+        Locator updatedProductRow = page.locator("table#productsTable tbody tr", new Page.LocatorOptions().setHasText(productName)).last();
+        assertThat(updatedProductRow).isVisible();
+
+        int updatedStock = Integer.parseInt(updatedProductRow.locator("td").nth(2).textContent());
+        assertEquals(initialStock - decrementAmount, updatedStock, "Stock should have decreased by " + decrementAmount);
+    }
+
     private void loginAsAdmin() {
         page.navigate("http://localhost:8080/login");
         page.fill("input[name=username]", "admin");
         page.fill("input[name=password]", "admin");
         page.click("button[type=submit]");
         assertEquals("http://localhost:8080/", page.url());
+    }
+
+    private void createTestProduct(String name, String price, String quantity, String description, String category, String minQuantity) {
+        page.click("button[data-bs-target='#createProductModal']");
+        page.fill("input#nombre", name);
+        page.fill("input#precio", price);
+        page.fill("input#cantidad", quantity);
+        page.fill("textarea#descripcion", description);
+        page.fill("input#categoria", category);
+        page.fill("input#cantidadMinima", minQuantity);
+        page.click("form#createProductForm button[type=submit]");
+        page.waitForURL("http://localhost:8080/");
     }
 
 }

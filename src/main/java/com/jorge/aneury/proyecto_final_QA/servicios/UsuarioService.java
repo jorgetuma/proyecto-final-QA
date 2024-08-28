@@ -68,6 +68,13 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public Usuario save(UsuarioDto usuarioDto) {
+        // Check if the role is valid
+        try {
+            Role.valueOf(usuarioDto.getRole());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid role: " + usuarioDto.getRole());
+        }
+
         Usuario usuario = new Usuario();
         usuario.setUserName(usuarioDto.getUsername());
         usuario.setPassword(usuarioDto.getPassword());

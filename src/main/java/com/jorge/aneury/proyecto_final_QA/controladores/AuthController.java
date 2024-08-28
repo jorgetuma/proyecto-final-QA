@@ -45,7 +45,11 @@ public class AuthController {
             return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
         }
         usuarioDto.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
-        usuarioService.save(usuarioDto);
-        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        try {
+            usuarioService.save(usuarioDto);
+            return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
