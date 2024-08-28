@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class UsuarioTest {
 
@@ -32,4 +36,28 @@ public class UsuarioTest {
         assertEquals("Prueba", usuario.getPassword());
         assertEquals(Role.ROLE_ADMIN, usuario.getRole());
     }
+
+    @Test
+    public void testSetAndGetRole() {
+        Usuario usuario = new Usuario();
+        usuario.setRole(Role.ROLE_ADMIN);
+        assertEquals(Role.ROLE_ADMIN, usuario.getRole());
+    }
+
+    @Test
+    public void testSetAndGetActive() {
+        Usuario usuario = new Usuario();
+        usuario.setActive(true);
+        assertTrue(usuario.isActive());
+        usuario.setActive(false);
+        assertFalse(usuario.isActive());
+    }
+
+    @Test
+    public void testConstructorWithNullValues() {
+        Usuario usuario = new Usuario(null, null);
+        assertNull(usuario.getUserName());
+        assertNull(usuario.getPassword());
+    }
+
 }
