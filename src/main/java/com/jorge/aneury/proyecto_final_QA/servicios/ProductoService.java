@@ -48,13 +48,22 @@ public class ProductoService {
 
     @Transactional
     public void incrementarStock(int id, int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a incrementar debe ser positiva");
+        }
         Producto p = productoRepository.findProductoById(id);
         p.setCantidad(p.getCantidad() + cantidad);
     }
 
     @Transactional
     public void decrementarStock(int id, int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a decrementar debe ser positiva");
+        }
         Producto p = productoRepository.findProductoById(id);
+        if (p.getCantidad() < cantidad) {
+            throw new IllegalArgumentException("No hay suficiente stock para decrementar");
+        }
         p.setCantidad(p.getCantidad() - cantidad);
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
 
 @Entity
 public class Producto {
@@ -13,14 +14,26 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private String categoria;
+    @Min(value = 0, message = "El precio no pueder ser negativo")
     private float precio;
+    @Min(value = 0, message="La cantidad no puede ser negativa")
     private int cantidad;
+    @Min(value = 0, message="La cantidad mínima no puede ser negativa")
     private int CantidadMinima;
     private boolean eliminado;
 
     public Producto() {}
 
     public Producto(String nombre, String descripcion, String categoria, float precio, int cantidad,int CantidadMinima) {
+        if (precio < 0) {
+            throw new IllegalArgumentException("El precio no puede ser negativo");
+        }
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad no puede ser negativa");
+        }
+        if (CantidadMinima < 0) {
+            throw new IllegalArgumentException("La cantidad mínima no puede ser negativa");
+        }
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -67,6 +80,9 @@ public class Producto {
     }
 
     public void setPrecio(float precio) {
+        if (precio < 0) {
+            throw new IllegalArgumentException("El precio no puede ser negativo");
+        }
         this.precio = precio;
     }
 
@@ -75,6 +91,9 @@ public class Producto {
     }
 
     public void setCantidad(int cantidad) {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad no puede ser negativa");
+        }
         this.cantidad = cantidad;
     }
 
@@ -83,7 +102,10 @@ public class Producto {
     }
 
     public void setCantidadMinima(int cantidadMinima) {
-        CantidadMinima = cantidadMinima;
+        if (cantidadMinima < 0) {
+            throw new IllegalArgumentException("La cantidad mínima no puede ser negativa");
+        }
+        this.CantidadMinima = cantidadMinima;
     }
 
     public boolean isEliminado() {

@@ -123,6 +123,7 @@ public class PlaywrightTests {
 
         // Open the create product modal
         page.click("button[data-bs-target='#createProductModal']");
+
         assertThat(page.locator("#createProductModal")).isVisible();
 
         // Fill out the form in the modal
@@ -329,6 +330,7 @@ public class PlaywrightTests {
         // Open the confirm delete modal for the last user
         lastUserRow.locator("button[data-bs-toggle='modal'][data-bs-target^='#confirmDeleteUserModal-']").click();
 
+        assertThat(page.locator("[id^='confirmDeleteUserModal-']").last()).isVisible();
         // Click the delete button in the modal
         page.locator("button#confirmDeleteUserButton").last().click();
 

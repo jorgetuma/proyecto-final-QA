@@ -52,7 +52,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="needs-validation" id="stockProductForm-${p.id}" method="post" action="/incrementar-stock/${p.id}" novalidate>
+                                <form class="" id="stockProductForm-${p.id}" method="post" action="/incrementar-stock/${p.id}">
                                     <div class="mb-3">
                                         <label for="cantidadIncrementar${p.id}" class="form-label">cantidad</label>
                                         <input type="number" class="form-control" name="cantidadIncrementar" id="cantidadIncrementar${p.id}" value="1" min="1" required>
@@ -76,10 +76,10 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="needs-validation" id="stockdownProductForm-${p.id}" method="post" action="/decrementar-stock/${p.id}" novalidate>
+                                <form class="" id="stockdownProductForm-${p.id}" method="post" action="/decrementar-stock/${p.id}">
                                     <div class="mb-3">
                                         <label for="cantidadDecrementar${p.id}" class="form-label">cantidad</label>
-                                        <input type="number" class="form-control" name="cantidadDecrementar" id="cantidadDecrementar${p.id}" value="1" min="1" required>
+                                        <input type="number" class="form-control" name="cantidadDecrementar" id="cantidadDecrementar${p.id}" value="1" min="1" max="${p.cantidad}" required>
                                         <div class="invalid-feedback">
                                             Por favor, ingrese cantidad.
                                         </div>
@@ -100,7 +100,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="needs-validation" id="modifyProductForm-${p.id}" method="post" action="modificar-prod/${p.id}" novalidate>
+                                <form class="" id="modifyProductForm-${p.id}" method="post" action="modificar-prod/${p.id}">
                                     <div class="mb-3">
                                         <label for="modifyNombre${p.id}" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" name="nombre" id="modifyNombre${p.id}" value="${p.nombre}" required>
@@ -138,7 +138,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="modifyCantidadMinima${p.id}" class="form-label">Cantidad Mínima</label>
-                                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima${p.id}" value="${p.cantidadMinima}" required>
+                                        <input type="number" class="form-control" name="cantidadMinima" id="modifyCantidadMinima${p.id}" value="${p.cantidadMinima}" required min="0">
                                         <div class="invalid-feedback">
                                             Por favor, ingrese una cantidad mínima válida.
                                         </div>

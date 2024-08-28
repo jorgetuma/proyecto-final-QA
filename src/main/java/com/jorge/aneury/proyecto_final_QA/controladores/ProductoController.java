@@ -68,21 +68,31 @@ public class ProductoController {
     }
 
     @PostMapping("/incrementar-stock/{id}")
-    public String incrementarStock(@AuthenticationPrincipal UserDetails userDetails,@PathVariable("id") int id, @RequestParam int cantidadIncrementar) {
-        Usuario usuario = usuarioService.findByUsuario(userDetails.getUsername());
-        Producto p = productoService.findById(id);
-        productoService.incrementarStock(id,cantidadIncrementar);
-        historialMovimientoService.registrarIncremento(p,usuario,cantidadIncrementar);
-        return "redirect:/";
+    public String incrementarStock(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("id") int id, @RequestParam int cantidadIncrementar, Model model) {
+        try {
+            Usuario usuario = usuarioService.findByUsuario(userDetails.getUsername());
+            Producto p = productoService.findById(id);
+            productoService.incrementarStock(id, cantidadIncrementar);
+            historialMovimientoService.registrarIncremento(p, usuario, cantidadIncrementar);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "productos";
+        }
     }
 
     @PostMapping("/decrementar-stock/{id}")
-    public String decrementarStock(@AuthenticationPrincipal UserDetails userDetails,@PathVariable("id") int id, @RequestParam int cantidadDecrementar) {
-        Usuario usuario = usuarioService.findByUsuario(userDetails.getUsername());
-        Producto p = productoService.findById(id);
-        productoService.decrementarStock(id,cantidadDecrementar);
-        historialMovimientoService.registrarDecremento(p,usuario,cantidadDecrementar);
-        return "redirect:/";
+    public String decrementarStock(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("id") int id, @RequestParam int cantidadDecrementar, Model model) {
+        try {
+            Usuario usuario = usuarioService.findByUsuario(userDetails.getUsername());
+            Producto p = productoService.findById(id);
+            productoService.decrementarStock(id, cantidadDecrementar);
+            historialMovimientoService.registrarDecremento(p, usuario, cantidadDecrementar);
+            return "redirect:/";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "productos";
+        }
     }
 
     @GetMapping("/dashboard")
